@@ -8,6 +8,20 @@ Global or scoped styles are inserted into the signature as inline CSS. Responsiv
 
 ## Setup
 
+```bash
+npm i vuemailsignatureconverter
+```
+
+main.js
+```js
+import { createApp } from 'vue'
+import App from './App.vue'
+import { mailSignatureConverter } from 'vueMailSignatureConverter'
+
+createApp(App).use(mailSignatureConverter).mount('#app')
+```
+
+App.vue
 ```vue
 <script setup>
 const $e = ref()
