@@ -96,7 +96,29 @@ const getHtml = (originalElement, sub = false) => {
 
 }
 
-const onClickCopy = async () => {
+const getSignatureHtml = () => {
+    let html = `<style type="text/css">${getGlobalStyles(props.source).join("\n")}</style>`
+    html += getHtml(props.source).innerHTML
+    html = html.replace(/ data-v-[a-z0-9]+=""/g, '')
+
+    return `<meta charset="UTF-8"><body>${html}</body>`
+}
+
+const onClickCopyHtml = () => {
+
+
+    navigator.clipboard.writeText(getSignatureHtml())
+        .then(function () {
+            console.log('HTML-Inhalt erfolgreich in die Zwischenablage kopiert.');
+        })
+        .catch(function (err) {
+            console.error('Fehler beim Kopieren des HTML-Inhalts: ', err);
+        })
+
+    alert('HTMl was copied to clipboard!')
+}
+
+const onClickDownloadMailsignature = async () => {
     // var selection = window.getSelection();
     // var range = document.createRange();
     // range.selectNodeContents($t.value);
@@ -130,11 +152,11 @@ const onClickCopy = async () => {
 
 
 
-    let html = `<style type="text/css">${getGlobalStyles(props.source).join("\n")}</style>`
-    html += getHtml(props.source).innerHTML
-    html = html.replace(/ data-v-[a-z0-9]+=""/g, '')
+    // let html = `<style type="text/css">${getGlobalStyles(props.source).join("\n")}</style>`
+    // html += getHtml(props.source).innerHTML
+    // html = html.replace(/ data-v-[a-z0-9]+=""/g, '')
 
-    text += quotedPrintableEncode(`<meta charset="UTF-8"><body>${html}</body>`)
+    text += quotedPrintableEncode(getSignatureHtml())
 
     // console.log(text)
     // return
@@ -158,34 +180,39 @@ const onClickCopy = async () => {
 
 <template>
     <div id="process">
-        <button type="button" @click="onClickCopy">Convert / Download</button>
+        <button type="button" @click="onClickDownloadMailsignature">Download .mailsignature</button>
+        <button type="button" @click="onClickCopyHtml">Copy HTML Code</button>
 
-        <ol v-if="!hideInstructions">
-            <li>Schließe Apple Mail</li>
-            <li>Lege diese Datei unter
-                <code>/Users/<span class="highlight">&lt;Benutzer*in&gt;</span>/Library/Mail/V<span class="highlight">&lt;Versionsnummer&gt;</span>/MailData/Signatures</code>
-                ab.
-            </li>
-            <li>Öffne die Datei <code>AllSignatures.plist</code> im selben Ordner</li>
-            <li>Füge folgenden Wert an Ende des Arrays (vor &lt;/array&gt;) ein:
-                <pre><code>&lt;dict&gt;
-    &lt;key&gt;SignatureIsRich&lt;/key&gt;
-    &lt;true/&gt;
-    &lt;key&gt;SignatureName&lt;/key&gt;
-    &lt;string&gt;<span class="highlight">{{ filename }}</span>&lt;/string&gt;
-    &lt;key&gt;SignatureUniqueId&lt;/key&gt;
-    &lt;string&gt;<span class="highlight">{{ filename }}</span>&lt;/string&gt;
-&lt;/dict&gt;
-                </code></pre>
-            </li>
-            <li>Speichere die <code>AllSignatures.plist</code>-Datei, schließe sie und sperre sie über den
-                Informationsdialog der Datei (markiere die Datei → <span class="key">cmd</span> + <span class="key">i</span>
-                → Checkbox „Geschützt“ setzen)</li>
-            <li>Öffne Apple Mail</li>
-            <li>Entsperre die <code>AllSignatures.plist</code>-Datei</li>
-            <li>Du findest die Signatur in den Apple Mail Einstellungen unter „Signaturen“, kannst sie deinem Account
-                zuordnen und ggf. als Standard definieren.</li>
-        </ol>
+        <template v-if="!hideInstructions">
+            <h1>Installationshinweise Apple Mail Signature</h1>
+            <ol>
+                <li>Schließe Apple Mail</li>
+                <li>Lege diese Datei unter
+                    <code>/Users/<span class="highlight">&lt;Benutzer*in&gt;</span>/Library/Mail/V<span class="highlight">&lt;Versionsnummer&gt;</span>/MailData/Signatures</code>
+                    ab.
+                </li>
+                <li>Öffne die Datei <code>AllSignatures.plist</code> im selben Ordner</li>
+                <li>Füge folgenden Wert an Ende des Arrays (vor &lt;/array&gt;) ein:
+                    <pre><code>&lt;dict&gt;
+        &lt;key&gt;SignatureIsRich&lt;/key&gt;
+        &lt;true/&gt;
+        &lt;key&gt;SignatureName&lt;/key&gt;
+        &lt;string&gt;<span class="highlight">{{ filename }}</span>&lt;/string&gt;
+        &lt;key&gt;SignatureUniqueId&lt;/key&gt;
+        &lt;string&gt;<span class="highlight">{{ filename }}</span>&lt;/string&gt;
+    &lt;/dict&gt;
+                    </code></pre>
+                </li>
+                <li>Speichere die <code>AllSignatures.plist</code>-Datei, schließe sie und sperre sie über den
+                    Informationsdialog der Datei (markiere die Datei → <span class="key">cmd</span> + <span
+                        class="key">i</span>
+                    → Checkbox „Geschützt“ setzen)</li>
+                <li>Öffne Apple Mail</li>
+                <li>Entsperre die <code>AllSignatures.plist</code>-Datei</li>
+                <li>Du findest die Signatur in den Apple Mail Einstellungen unter „Signaturen“, kannst sie deinem Account
+                    zuordnen und ggf. als Standard definieren.</li>
+            </ol>
+        </template>
     </div>
 </template>
 
@@ -210,11 +237,17 @@ const onClickCopy = async () => {
         border-radius: 100em;
         box-shadow: 1px 1px 0px 1px #000000;
         transition: box-shadow .15s ease;
+        margin-right: 1em;
 
         &:focus-within {
             box-shadow: 1px 1px 0px -1px #000000;
 
         }
+    }
+
+    h1 {
+        font-weight: normal;
+        font-size: 1.5em;
     }
 
     .highlight {
