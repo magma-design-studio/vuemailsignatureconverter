@@ -30,9 +30,9 @@ const $e = ref()
 <template>
     <div ref="$e">
         <mailSignatureEditable class="default" placeholder="Your name" /><br />
-        <mailSignatureEditable class="default" placeholder="Your title" :list=['Dr.', 'Prof.', 'Prof. Dr.'] /><br />
+        <mailSignatureEditable class="default" placeholder="Your title" :list="['Dr.', 'Prof.', 'Prof. Dr.']" /><br />
         <br />
-        Phone +49 123 456789-<mailSignatureEditable class="default" placeholder="Your title" :list=['Dr.', 'Prof.', 'Prof. Dr.'] /><br />
+        Phone +49 123 456789-<mailSignatureEditable class="default" placeholder="Your Number" /><br />
         <br />
         ABC Company<br />
         123 Main Street<br />
