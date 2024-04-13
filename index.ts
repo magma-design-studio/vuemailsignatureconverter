@@ -10,4 +10,9 @@ export const mailSignatureConverter = (app) => {
     "mailSignatureEditable",
     defineAsyncComponent(() => import("./components/editable.vue"))
   )
+
+  app.component(
+    "mailClientWindow",
+    defineAsyncComponent(() => import("./components/mailClientWindow.vue"))
+  )
 }

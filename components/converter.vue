@@ -179,7 +179,7 @@ const onClickDownloadMailsignature = async () => {
 </script>
 
 <template>
-    <div id="process">
+    <div class="processor">
         <button type="button" @click="onClickDownloadMailsignature">Download .mailsignature</button>
         <button type="button" @click="onClickCopyHtml">Copy HTML Code</button>
 
@@ -217,7 +217,7 @@ const onClickDownloadMailsignature = async () => {
 </template>
 
 <style lang="scss" scoped>
-#process {
+.processor {
     border-top: 1px solid black;
     border-left: 1px solid black;
     border-right: 4px solid black;
