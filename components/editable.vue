@@ -1,8 +1,12 @@
 <script setup>
 
-import { ref, computed, watch, getCurrentInstance, shallowRef } from 'vue'
+import { ref, computed, watch, getCurrentInstance, shallowRef, useSlots, onMounted } from 'vue'
 
 const $i = ref()
+const slots = useSlots()
+
+console.log(slots)
+
 
 const props = defineProps({
     placeholder: {},
@@ -19,7 +23,7 @@ const props = defineProps({
     }
 })
 
-const placeholder = ref(`'${props.placeholder}'`)
+const placeholder = ref(props.placeholder)
 const value = ref()
 const input = ref(false)
 
@@ -38,7 +42,7 @@ const printAttrs = computed(_ => {
     let a = {}
 
     if (!value.value)
-        a['data-placeholder'] = props.placeholder
+        a['data-placeholder'] = placeholder.value
 
     return a
 })
@@ -52,6 +56,12 @@ watch(input, _input => {
         setTimeout(() => {
             $i.value.focus()
         })
+})
+
+onMounted(_ => {
+    if(!placeholder.value && 'default' in slots) {
+        placeholder.value = slots.default()[0].children
+    }
 })
 
 </script>
