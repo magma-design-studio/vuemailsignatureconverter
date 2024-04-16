@@ -81,7 +81,7 @@ onMounted(_ => {
 span {
     &:not(.input) {
         &:empty {
-            background-color: var(--app-highlight-color);
+            background-color: var(--app-highlight-color, rgba(69, 239, 131, .75));
 
             &::after {
                 opacity: .5;
@@ -100,7 +100,7 @@ input {
     padding: 0;
 
     &:focus-visible {
-        outline-color: var(--app-highlight-color);
+        outline-color: var(--app-highlight-color, rgba(69, 239, 131, .75));
         outline-style: auto;
         outline-width: 4px;
 

@@ -1,5 +1,7 @@
 <script setup>
 
+import { computed } from 'vue'
+
 import {
     mimeWordsEncode,
     headerLineEncode,
@@ -176,6 +178,16 @@ const onClickDownloadMailsignature = async () => {
     document.body.removeChild(a);
 
 }
+
+const plist = computed(_ => `&lt;dict&gt;
+    &lt;key&gt;SignatureIsRich&lt;/key&gt;
+    &lt;true/&gt;
+    &lt;key&gt;SignatureName&lt;/key&gt;
+    &lt;string&gt;<span class="highlight">${props.filename}</span>&lt;/string&gt;
+    &lt;key&gt;SignatureUniqueId&lt;/key&gt;
+    &lt;string&gt;<span class="highlight">${props.filename}</span>&lt;/string&gt;
+&lt;/dict&gt;
+`)
 </script>
 
 <template>
@@ -184,33 +196,17 @@ const onClickDownloadMailsignature = async () => {
         <button type="button" @click="onClickCopyHtml">Copy HTML Code</button>
 
         <template v-if="!hideInstructions">
-            <h1>Installationshinweise Apple Mail Signature</h1>
+            <h1>Installation Instructions for Apple Mail Signature</h1>
             <ol>
-                <li>Schließe Apple Mail</li>
-                <li>Lege diese Datei unter
-                    <code>/Users/<span class="highlight">&lt;Benutzer*in&gt;</span>/Library/Mail/V<span class="highlight">&lt;Versionsnummer&gt;</span>/MailData/Signatures</code>
-                    ab.
-                </li>
-                <li>Öffne die Datei <code>AllSignatures.plist</code> im selben Ordner</li>
-                <li>Füge folgenden Wert an Ende des Arrays (vor &lt;/array&gt;) ein:
-                    <pre><code>&lt;dict&gt;
-        &lt;key&gt;SignatureIsRich&lt;/key&gt;
-        &lt;true/&gt;
-        &lt;key&gt;SignatureName&lt;/key&gt;
-        &lt;string&gt;<span class="highlight">{{ filename }}</span>&lt;/string&gt;
-        &lt;key&gt;SignatureUniqueId&lt;/key&gt;
-        &lt;string&gt;<span class="highlight">{{ filename }}</span>&lt;/string&gt;
-    &lt;/dict&gt;
-                    </code></pre>
-                </li>
-                <li>Speichere die <code>AllSignatures.plist</code>-Datei, schließe sie und sperre sie über den
-                    Informationsdialog der Datei (markiere die Datei → <span class="key">cmd</span> + <span
-                        class="key">i</span>
-                    → Checkbox „Geschützt“ setzen)</li>
-                <li>Öffne Apple Mail</li>
-                <li>Entsperre die <code>AllSignatures.plist</code>-Datei</li>
-                <li>Du findest die Signatur in den Apple Mail Einstellungen unter „Signaturen“, kannst sie deinem Account
-                    zuordnen und ggf. als Standard definieren.</li>
+                <li>Close Apple Mail.</li>
+                <li>Place this file in <code>/Users/<span class="highlight">&lt;User&gt;</span>/Library/Mail/V<span class="highlight">&lt;VersionNumber&gt;</span>/MailData/Signatures</code>.</li>
+                <li>Open the file <code>AllSignatures.plist</code> in the same folder.</li>
+                <li>Add the following value at the end of the array (before &lt;/array&gt;):
+                <pre><code v-html="plist"></code></pre></li>
+                <li>Save the <code>AllSignatures.plist</code> file, close it, and lock it via the file's information dialog (select the file → <span class="key">cmd</span> + <span class="key">i</span> → check the "Locked" checkbox).</li>
+                <li>Open Apple Mail.</li>
+                <li>Unlock the <code>AllSignatures.plist</code> file.</li>
+                <li>You will find the signature in the Apple Mail settings under "Signatures," where you can assign it to your account and possibly set it as the default.</li>
             </ol>
         </template>
     </div>
@@ -225,6 +221,7 @@ const onClickDownloadMailsignature = async () => {
     background-color: rgb(241, 241, 241);
     border-radius: 1em;
     padding: 1em;
+    margin-bottom: .5em;
 
     *,
     button {
@@ -248,9 +245,10 @@ const onClickDownloadMailsignature = async () => {
     h1 {
         font-weight: normal;
         font-size: 1.5em;
+        margin: .67em 0;
     }
 
-    .highlight {
+    :deep(.highlight) {
         background-color: var(--app-highlight-color, rgba(69, 239, 131, .75));
     }
 

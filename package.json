@@ -6,9 +6,19 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "apple",
+    "mail",
+    "signature",
+    "mailsignature",
+    "generator",
+    "converter",
+    "webfont",
+    "magma",
+    "magmadesignstudio"
+  ],
+  "author": "Sebastian Tiede <tiede@magmadesignstudio.de> (https://magmadesignstudio.de)",
+  "license": "CC BY-NC 4.0 DEED",
   "devDependencies": {
     "sass": "^1.75.0"
   },

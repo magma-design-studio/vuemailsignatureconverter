@@ -2,8 +2,11 @@
     <div class="mailclientwindow">
         <div class="mailclientwindow__header"><span></span></div>
         <slot name="letter">
-            <p>Dear Lazy Dog,</p>
-            <p>I hope this message finds you well and resting comfortably after your recent athletic endeavor. I must say, I was thoroughly impressed by the spectacle of "The quick brown fox jumps over the lazy dog." Watching a fox leap over you while you lounged so peacefully was nothing short of spectacular.</p>
+            Dear Lazy Dog, <br />
+            <br />
+            I hope this message finds you well and resting comfortably after your recent athletic endeavor. I must say, I was thoroughly impressed by the spectacle of "The quick brown fox jumps over the lazy dog." Watching a fox leap over you while you lounged so peacefully was nothing short of spectacular.<br />
+            <br />
+            Best regards,
         </slot>
         <slot></slot>
     </div>
@@ -18,13 +21,13 @@
     border-radius: 1em;
     padding: 1em;
     overflow: hidden;
-    font-family: sans-serif;
+    font-family: Helvetica, sans-serif;
     margin-bottom: .5em;
 
     &__header {
         background-color: rgb(241, 241, 241);
         height: 30px;
-        margin: -1em -1em 0 -1em;
+        margin: -1em -1em 1em -1em;
         position: relative;
         span {
             &,
